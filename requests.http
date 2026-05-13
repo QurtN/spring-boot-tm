@@ -10,5 +10,26 @@ Content-Type: application/json
 }
 
 ###
-###
 DELETE http://localhost:8080/tasks/1
+
+###
+POST http://localhost:8080/tasks
+Content-Type: application/json
+
+{
+  "title": "Einkaufen",
+  "completed": false,
+  "parentTaskId": 1
+}
+
+###
+POST http://localhost:8080/tasks
+Content-Type: application/json
+
+{
+  "title": "Lernen",
+  "completed": false,
+  "parentTaskId": 1,
+  "durationSeconds": 10800,
+  "dueDate": "2026-05-20T18:00:00"
+}
