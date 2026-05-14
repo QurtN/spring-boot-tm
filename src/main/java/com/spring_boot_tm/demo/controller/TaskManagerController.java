@@ -39,15 +39,14 @@ public class TaskManagerController {
             TaskManager parentTask = tmRepository.findById(request.getParentTaskId()).orElseThrow();
             tm.setParentTask(parentTask);
         }
+
         if (request.getDurationSeconds() != null) {
             tm.setDurationSeconds(request.getDurationSeconds());
         } else {
             tm.setDurationSeconds(0L);
         }
 
-        tm.setDurationSeconds(
-                request.getDurationSeconds()
-        );
+        tm.setDurationSeconds(request.getDurationSeconds());
         return tmRepository.save(tm);
     }
 
