@@ -62,4 +62,12 @@ public class TaskService {
           taskRepo.save(tm);
       }
    }
+
+    public void deleteTask(Long id) {
+        List<TaskManager> subtasks=taskRepo.findByParentTaskId(id);
+        for (TaskManager subtask:subtasks) {
+            taskRepo.delete(subtask);
+        }
+        taskRepo.deleteById(id);
+    }
 }

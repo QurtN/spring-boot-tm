@@ -33,3 +33,27 @@ Content-Type: application/json
   "durationSeconds": 10800,
   "dueDate": "2026-05-20T18:00:00"
 }
+
+###
+POST http://localhost:8080/tasks
+Content-Type: application/json
+
+{
+  "title": "Basketball",
+  "completed": false,
+  "parentTaskId": 1,
+  "durationSeconds": 10800,
+  "dueDate": "2026-05-20T18:00:00"
+}
+
+###
+POST http://localhost:8080/tasks
+Content-Type: application/json
+
+{
+  "title": "Malen",
+  "completed": false,
+  "parentTaskId": 1,
+  "durationSeconds": 10800,
+  "dueDate": "2026-05-20T18:00:00"
+}

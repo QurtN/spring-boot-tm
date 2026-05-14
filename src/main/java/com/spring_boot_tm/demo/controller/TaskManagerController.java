@@ -52,7 +52,7 @@ public class TaskManagerController {
 
     @DeleteMapping("/{id}")
     public void deleteTask(@PathVariable Long id) {
-        tmRepository.deleteById(id);
+        taskService.deleteTask(id);
     }
 
     @PostMapping("/{id}/start")
