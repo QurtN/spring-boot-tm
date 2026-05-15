@@ -73,7 +73,7 @@ public class TaskServiceTest {
         tmRepo.save(parent);
         TaskManager subtask1 = new TaskManager("Einkaufen", true);
         subtask1.setParentTask(parent);
-        TaskManager subtask2 = new TaskManager("Geschirr", true);
+        TaskManager subtask2 = new TaskManager("Geschirr waschen", true);
         subtask2.setParentTask(parent);
         tmRepo.save(subtask1);
         tmRepo.save(subtask2);
@@ -91,7 +91,7 @@ public class TaskServiceTest {
         tmRepo.save(parent);
         TaskManager subtask1 = new TaskManager("Geschirr waschen", true);
         subtask1.setParentTask(parent);
-        TaskManager subtask2 = new TaskManager("Wash dishes", false);
+        TaskManager subtask2 = new TaskManager("Zutaten vorbereiten", false);
         subtask2.setParentTask(parent);
 
         tmRepo.save(subtask1);
@@ -141,7 +141,7 @@ public class TaskServiceTest {
     @Test
     void shouldNotStartTimerTwice() {
 
-        TaskManager task = new TaskManager("Study", false);
+        TaskManager task = new TaskManager("Lernen", false);
         task.setDurationSeconds(3600L);
         tmRepo.save(task);
         //First start
@@ -224,8 +224,8 @@ public class TaskServiceTest {
         assertEquals(dueDate, task.getDueDate());
     }
 
-    /**
-     * TEST: defaultDuration is set correctly when creating a task
+    /*
+    TEST: defaultDuration is set correctly when creating a task
      */
     @Test
     void shouldUseDefaultDurationWhenNull() {
