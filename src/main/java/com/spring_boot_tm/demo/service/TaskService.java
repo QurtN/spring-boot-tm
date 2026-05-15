@@ -10,6 +10,9 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
 @Service
 public class TaskService {
 
@@ -29,7 +32,8 @@ public class TaskService {
         }
 
         if (request.getParentTaskId() != null) {
-            TaskManager parentTask = taskRepo.findById(request.getParentTaskId()).orElseThrow();
+            TaskManager parentTask = taskRepo.findById(request.getParentTaskId()).orElseThrow(() ->
+                    new ResponseStatusException(HttpStatus.NOT_FOUND, "Parent task not found!"));
             tm.setParentTask(parentTask);
         }
         tm.setDueDate(request.getDueDate());
@@ -59,22 +63,24 @@ public class TaskService {
        tm.setTimerStart(LocalDateTime.now());
        tm.setPaused(false);
        TaskManager updatedTm = taskRepo.save(tm);
+       if(tm.getDurationSeconds() <= 0L) throw new IllegalStateException("Task has no timer duration and can not be started!");
        return updatedTm;
    }
 
   public TaskManager pauseTimer(Long id) {
-
- TaskManager tm = taskRepo.findById(id).orElseThrow();
-
+        TaskManager tm = taskRepo.findById(id).orElseThrow();
+       if(tm.getDurationSeconds() <= 0L) throw new IllegalStateException("Task has no timer duration and can not be paused!");
        if(tm.getTimerStart()!=null){
            long seconds = ChronoUnit.SECONDS.between(tm.getTimerStart(),LocalDateTime.now());
            tm.setElapsedSeconds(tm.getElapsedSeconds()+seconds);
            tm.setPaused(true);
             //check completion of task
-           if (tm.getElapsedSeconds()>=tm.getDurationSeconds()) tm.setCompleted(true);
-           //reset timer
-           tm.setTimerStart(null);
-           tm.setPaused(false);
+           if (tm.getElapsedSeconds()>=tm.getDurationSeconds()){
+               tm.setCompleted(true);
+               //reset timer
+               tm.setTimerStart(null);
+               tm.setPaused(false);
+           }
        }
        else {
            throw new RuntimeException("Timer has not been started!");
@@ -87,6 +93,8 @@ public class TaskService {
         TaskManager tm = taskRepo.findById(id).orElseThrow();
         //Timer must be paused to use this method
         if (!tm.isPaused()) throw new IllegalStateException("Timer is not paused!");
+        //Timer must have a duration
+        if(tm.getDurationSeconds() <= 0L) throw new IllegalStateException("Task has no timer duration and can not be resumed!");
         //restart timer from current time
         tm.setTimerStart(LocalDateTime.now());
         tm.setPaused(false);

@@ -124,8 +124,7 @@ public class TaskServiceTest {
      */
     @Test
     void shouldPauseTimer() {
-
-        TaskManager task = new TaskManager("Study", false);
+        TaskManager task = new TaskManager("Lernen", false);
 
         task.setDurationSeconds(3600L);
         task.setTimerStart(LocalDateTime.now().minusMinutes(10));
@@ -154,7 +153,7 @@ public class TaskServiceTest {
         taskService.startTimer(task.getId());
         TaskManager updatedTask = tmRepo.findById(task.getId()).orElseThrow();
 
-        //assert that timerStart did not change by 0.5 seconds
+        //assert that timerStart did not change by 0.05 seconds
         Duration difference = Duration.between(originalStart, updatedTask.getTimerStart());
 
         assertTrue(difference.toMillis() < 50);
@@ -170,9 +169,24 @@ public class TaskServiceTest {
         //using the RunTimeException class, assert that we throw an error here
         assertThrows(RuntimeException.class,()->taskService.pauseTimer(task.getId()));
     }
+
+    /*
+   TEST: Reject timer operations when no duration exists.
+    */
+    @Test
+    void shouldRejectTimerWithoutDuration() {
+        TaskManager task=new TaskManager("Lernen", false);
+        task.setDurationSeconds(0L);
+        tmRepo.save(task);
+        assertThrows(IllegalStateException.class,()->taskService.startTimer(task.getId()));
+        assertThrows(IllegalStateException.class,()->taskService.pauseTimer(task.getId()));
+        assertThrows(IllegalStateException.class,()->taskService.resumeTimer(task.getId()));
+    }
+
     /*
     --------------------------------TESTS for proper deletion and exception handling--------------------------------------------
      */
+
     /*
      TEST: Recursive deletion of all subtasks and the parent task, when deleting a parent task
      */
@@ -217,7 +231,7 @@ public class TaskServiceTest {
     void shouldUseDefaultDurationWhenNull() {
 
         TaskRequest request = new TaskRequest();
-        request.setTitle("Default duration test");
+        request.setTitle("duration test");
         TaskManager task = taskService.createTask(request);
 
         assertEquals(0L, task.getDurationSeconds());
@@ -247,7 +261,7 @@ public class TaskServiceTest {
         //This parent task will not exist
         request.setParentTaskId(999L);
 
-        assertThrows(RuntimeException.class, () -> taskService.createTask(request));
+        assertThrows(RuntimeException.class,()->taskService.createTask(request));
     }
 
     /*
@@ -328,7 +342,7 @@ public class TaskServiceTest {
         task.setPaused(false);
         tmRepo.save(task);
 
-        assertThrows(IllegalStateException.class, () -> taskService.resumeTimer(task.getId()));
+        assertThrows(IllegalStateException.class,()->taskService.resumeTimer(task.getId()));
     }
 
     /*
@@ -336,6 +350,6 @@ public class TaskServiceTest {
      */
     @Test
     void shouldThrowIfResumeTaskDoesNotExist() {
-        assertThrows(RuntimeException.class, () -> taskService.resumeTimer(999L));
+        assertThrows(RuntimeException.class,()->taskService.resumeTimer(999L));
     }
 }
