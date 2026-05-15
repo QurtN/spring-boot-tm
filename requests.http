@@ -57,3 +57,91 @@ Content-Type: application/json
   "durationSeconds": 10800,
   "dueDate": "2026-05-20T18:00:00"
 }
+
+###
+POST http://localhost:8080/tasks
+Content-Type: application/json
+
+{
+  "title": "Javascript lernen",
+  "durationSeconds": 3600
+}
+
+###
+POST http://localhost:8080/tasks
+Content-Type: application/json
+
+{
+  "title": "Meditation",
+  "durationSeconds": 30
+}
+
+###
+POST http://localhost:8080/tasks
+Content-Type: application/json
+
+{
+  "title": "Zutaten vorbereiten",
+  "parentTaskId": 1,
+  "durationSeconds": 900
+}
+
+###
+POST http://localhost:8080/tasks
+Content-Type: application/json
+
+{
+  "title": "Klausurvorbereitung",
+  "dueDate": "2026-06-01T18:00:00"
+}
+
+###
+POST http://localhost:8080/tasks
+Content-Type: application/json
+
+{
+  "title": "Workout",
+  "completed": false,
+  "durationSeconds": 5400,
+  "dueDate": "2026-06-05T20:00:00"
+}
+###
+POST http://localhost:8080/tasks
+Content-Type: application/json
+
+{
+  "title": "Joggen",
+  "parentTaskId": 2,
+  "durationSeconds": 1800,
+  "dueDate": "2026-06-05T19:00:00"
+}
+
+###
+POST http://localhost:8080/tasks
+Content-Type: application/json
+
+{
+  "title": "Kaputte subtask",
+  "parentTaskId": 999
+}
+###
+POST http://localhost:8080/tasks/1
+Content-Type: application/json
+
+
+###
+POST http://localhost:8080/tasks/1/start
+Content-Type: application/json
+
+
+###
+POST http://localhost:8080/tasks/1/pause
+Content-Type: application/json
+
+###
+POST http://localhost:8080/tasks/1/resume
+Content-Type: application/json
+
+###
+POST http://localhost:8080/tasks/1/check-parent
+Content-Type: application/json

@@ -2,19 +2,39 @@ package com.spring_boot_tm.demo.dto;
 
 import java.time.LocalDateTime;
 
-
+/**
+ * DTO used for task creation requests.
+ * <p>
+ *     Separates incoming API request data from JSONs
+ *     from the database entity model (the TaskManager class).
+ * </p>
+ */
 public class TaskRequest {
 
+    /**
+     * Title of the task
+     */
     private String title;
-
+    /**
+     * Optional completion state
+     */
     private Boolean completed;
-
+    /**
+     * parent task id of an optional parent task
+     */
     private Long parentTaskId;
-
+    /**
+     * Optional due date for task completion
+     */
     private LocalDateTime dueDate;
-
+    /**
+     * Optional timer duration in seconds
+     */
     private Long durationSeconds;
 
+    /**
+     * Default constructor for the TaskRequest class
+     */
     public TaskRequest() {
     }
 
