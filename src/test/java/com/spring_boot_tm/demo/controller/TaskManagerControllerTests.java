@@ -111,8 +111,7 @@ public class TaskManagerControllerTests {
         request.setTitle("Einkaufen");
         request.setParentTaskId(parent.getId());
         mockMvc.perform(post("/tasks").contentType(MediaType.APPLICATION_JSON)
-
-                                .content(objectMapper.writeValueAsString(request))).andExpect(status().isOk())
+                        .content(objectMapper.writeValueAsString(request))).andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value("Einkaufen"))
                 .andExpect(jsonPath("$.parentTask.id").value(parent.getId()));
     }
